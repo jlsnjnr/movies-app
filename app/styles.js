@@ -72,3 +72,47 @@ export const ContainerMovies = styled.View`
   flex-wrap: wrap;
   gap: 15px;
 `
+
+export const ContainerMoviesSearch = styled.View`
+  align-items: center;
+  flex-direction: row;
+  gap: 20px;
+`
+
+export const MovieDetailSarch = styled.View`
+  margin: 30px 0;
+`
+
+export const TitleMovieSearch = styled.Text`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #FFFFFF;
+`
+
+export const DetailsMovieSearch = styled.Text`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 24px;
+  color: #FFFFFF;
+  align-items: center;
+  gap: 10px;
+`
+
+export const NoteMovieSearch = styled.Text`
+  font-style: normal;
+  align-items: center;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 24px;
+  color: #FF8700;
+  gap: 10px;
+`
+
+export const ContainerName = styled.View`
+  align-items: center;
+  flex-direction: row;
+  gap: 5px;
+`
