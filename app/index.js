@@ -20,6 +20,7 @@ import {
   ContainerMovies,
   ContainerMoviesSearch,
   ContainerName,
+  ContainerNoResults,
   ContainerScroll,
   ContainerSearchInput,
   DetailsMovieSearch,
@@ -27,6 +28,8 @@ import {
   MovieDetailSarch,
   NoteMovieSearch,
   Search,
+  SubTextSorry,
+  TextSorry,
   Title,
   TitleList,
   TitleListText,
@@ -171,10 +174,11 @@ export default function Page() {
 
   const [highligthed, setHighligthed] = useState([]);
   const [filterMovies, setFilterMovies] = useState([]);
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocused, setIsFocused] = useState(true);
   
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
+  const [noHaveResults, setNoHaveResults] = useState(false);
 
   useEffect(() => {
     const isHighligthed = moviesData.filter(
@@ -191,10 +195,29 @@ export default function Page() {
   };
 
   const handleSearch = () => {
-    const filteredData = moviesData.filter((item) =>
+    const filteredDataMovie = moviesData.filter((item) =>
       item.name.toLowerCase().includes(search.toLowerCase())
     );
-    setFilteredData(filteredData);
+
+    console.log(filteredDataMovie)
+    
+    if (filteredDataMovie.length === 0) {
+      setNoHaveResults(true);
+    } else {
+      setNoHaveResults(false);
+    }
+
+    setFilteredData(filteredDataMovie);
+
+    console.log(noHaveResults)
+
+    // console.log(filteredData)
+
+    if(search === "") {
+      setIsFocused(true);
+    } else {
+      setIsFocused(false);
+    }
   };
 
   useEffect(() => {
@@ -230,63 +253,69 @@ export default function Page() {
               onSubmitEditing={() => handleSearch()}
               placeholderTextColor="#67686D"
               placeholder="Search"
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
             />
             <IconInput>
               <Icon name="search-outline" size={28} color="#67686D" />
             </IconInput>
-            <Button title="Buscar" onPress={handleSearch} />
           </ContainerSearchInput>
 
-          {/* {!isFocused && ( */}
-          <>
-            <View style={styles.wrapper}>
-              <Carousel
-                activeSlideAlignment={"start"}
-                data={highligthed}
-                renderItem={renderItem}
-                sliderWidth={windowWidth}
-                itemWidth={200}
-              />
-            </View>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              scrollEventThrottle={200}
-              decelerationRate="fast"
-              pagingEnabled
-            >
-              <ContainerListHorizontalView>
-                <TitleList onPress={() => filterNow("Now playing")}>
-                  <TitleListText>Now playing</TitleListText>
-                </TitleList>
-
-                <TitleList onPress={() => filterNow("Upcoming")}>
-                  <TitleListText>Upcoming</TitleListText>
-                </TitleList>
-
-                <TitleList onPress={() => filterNow("Top rated")}>
-                  <TitleListText>Top rated</TitleListText>
-                </TitleList>
-
-                <TitleList onPress={() => filterNow("Popular")}>
-                  <TitleListText>Popular</TitleListText>
-                </TitleList>
-              </ContainerListHorizontalView>
-            </ScrollView>
-
-            <ContainerMovies>
-              {filterMovies.map((url) => (
-                <Image
-                  key={url.url}
-                  resizeMode="cover"
-                  source={{ uri: url.url }}
-                  style={{ height: 150, width: "30%", borderRadius: 10 }}
+          {isFocused === true && (
+            <>
+              <View style={styles.wrapper}>
+                <Carousel
+                  activeSlideAlignment={"start"}
+                  data={highligthed}
+                  renderItem={renderItem}
+                  sliderWidth={windowWidth}
+                  itemWidth={200}
                 />
-              ))}
-            </ContainerMovies>
-          </>
+              </View>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                scrollEventThrottle={200}
+                decelerationRate="fast"
+                pagingEnabled
+              >
+                <ContainerListHorizontalView>
+                  <TitleList onPress={() => filterNow("Now playing")}>
+                    <TitleListText>Now playing</TitleListText>
+                  </TitleList>
+
+                  <TitleList onPress={() => filterNow("Upcoming")}>
+                    <TitleListText>Upcoming</TitleListText>
+                  </TitleList>
+
+                  <TitleList onPress={() => filterNow("Top rated")}>
+                    <TitleListText>Top rated</TitleListText>
+                  </TitleList>
+
+                  <TitleList onPress={() => filterNow("Popular")}>
+                    <TitleListText>Popular</TitleListText>
+                  </TitleList>
+                </ContainerListHorizontalView>
+              </ScrollView>
+
+              <ContainerMovies>
+                {filterMovies.map((url) => (
+                  <Image
+                    key={url.url}
+                    resizeMode="cover"
+                    source={{ uri: url.url }}
+                    style={{ height: 150, width: "30%", borderRadius: 10 }}
+                  />
+                ))}
+              </ContainerMovies>
+            </>
+          )}
+
+          {noHaveResults === true && (
+            <ContainerNoResults>
+              <Image source={require('./../src/assets/no-results1.png')}/>
+              <TextSorry>We are sorry, we can not find the movie :(</TextSorry>
+              <SubTextSorry>Find your movie by Type title, categories, years, etc.</SubTextSorry>
+            </ContainerNoResults>
+          )}
 
           {search !== "" &&
             filteredData.map((item) => (
@@ -319,7 +348,7 @@ export default function Page() {
                   </ContainerName>
                 </MovieDetailSarch>
               </ContainerMoviesSearch>
-            ))}
+          ))}
         </ContainerScroll>
       </SafeAreaView>
     </Container>
