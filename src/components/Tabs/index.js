@@ -1,11 +1,15 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import Icon from "react-native-vector-icons/Ionicons";
 import { Container, GoToIcon, GoToText } from './styles';
 
 const Tabs = () => {
+  const link = useRouter();
+
+  const handleGoHome = () => link.push('/');
   return (
     <Container> 
-      <GoToIcon>
+      <GoToIcon onPress={() => handleGoHome()}>
         <Icon name="home-outline" size={28} color="#0296E5" />
         <GoToText style={{ color: '#0296E5' }}>Home</GoToText>
       </GoToIcon>

@@ -16,7 +16,7 @@ export const Container = styled.View`
   border-top-width: 1px;
 `
 
-export const GoToIcon = styled.View`
+export const GoToIcon = styled.TouchableOpacity`
   align-items: center;
   justify-cntent: center;
   width: 70px;

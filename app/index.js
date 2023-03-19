@@ -1,5 +1,6 @@
+import { Link, useRouter } from "expo-router";
 import React, { useState, useEffect } from "react";
-import { Button } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 import {
   View,
@@ -7,7 +8,6 @@ import {
   Dimensions,
   StyleSheet,
   ScrollView,
-  Text,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Carousel from "react-native-snap-carousel";
@@ -224,11 +224,15 @@ export default function Page() {
     filterNow("Now playing");
   }, []);
 
+  const link = useRouter();
+
+  const handleOpenMovie = () => link.push('/movie');
+
   const renderItem = ({ item }) => {
     return (
-      <View style={styles.slide}>
-        <Image source={{ uri: item.url }} style={styles.image} />
-      </View>
+      <TouchableOpacity onPress={() => handleOpenMovie()} style={styles.slide}>
+          <Image source={{ uri: item.url }} style={styles.image} />
+      </TouchableOpacity>
     );
   };
 
@@ -311,7 +315,7 @@ export default function Page() {
 
           {noHaveResults === true && (
             <ContainerNoResults>
-              <Image source={require('./../src/assets/no-results1.png')}/>
+              <Image style={{ marginBottom: 30 }} source={require('./../src/assets/no-results1.png')}/>
               <TextSorry>We are sorry, we can not find the movie :(</TextSorry>
               <SubTextSorry>Find your movie by Type title, categories, years, etc.</SubTextSorry>
             </ContainerNoResults>

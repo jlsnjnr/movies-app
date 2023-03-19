@@ -71,6 +71,7 @@ export const ContainerMovies = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   gap: 15px;
+  margin-bottom: 30px;
 `
 
 export const ContainerMoviesSearch = styled.View`
@@ -121,16 +122,14 @@ export const ContainerNoResults = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
+  margin: 40px 0;
 `
 
 export const TextSorry = styled.Text`
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
-  line-height: 160%;
   text-align: center;
-  letter-spacing: 0.12px;
-  text-transform: capitalize;
   color: #EBEBEF;
 `
 
@@ -138,8 +137,6 @@ export const SubTextSorry = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
-  line-height: 160%;
   text-align: center;
-  letter-spacing: 0.12px;
   color: #92929D;
 `
