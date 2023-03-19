@@ -198,8 +198,6 @@ export default function Page() {
     const filteredDataMovie = moviesData.filter((item) =>
       item.name.toLowerCase().includes(search.toLowerCase())
     );
-
-    console.log(filteredDataMovie)
     
     if (filteredDataMovie.length === 0) {
       setNoHaveResults(true);
@@ -208,10 +206,6 @@ export default function Page() {
     }
 
     setFilteredData(filteredDataMovie);
-
-    console.log(noHaveResults)
-
-    // console.log(filteredData)
 
     if(search === "") {
       setIsFocused(true);
@@ -225,8 +219,7 @@ export default function Page() {
   }, []);
 
   const link = useRouter();
-
-  const handleOpenMovie = () => link.push('/movie');
+  const handleOpenMovie = () => link?.push('/movie');
 
   const renderItem = ({ item }) => {
     return (
