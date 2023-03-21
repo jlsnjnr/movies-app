@@ -6,6 +6,7 @@ export const Container = styled.View`
   padding: 20px;
   position: relative;
 `
+
 export const ContainerScroll = styled.ScrollView``
 
 export const Title = styled.Text`
