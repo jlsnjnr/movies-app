@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native"
 import Icon from "react-native-vector-icons/Ionicons";
 import { ContainerHeaderDetails, Title } from "./styles";
 
-const HeaderDatails = () => {
+const Header = (props) => {
   const link = useRouter();
   const [isFilled, setIsFilled] = useState(false);
   const handleIsFilled = () => setIsFilled(!isFilled);
@@ -17,7 +17,7 @@ const HeaderDatails = () => {
       <TouchableOpacity onPress={() => link.back()}>
         <Icon name="chevron-back-outline" size={28} color="#67686D" />
       </TouchableOpacity>
-      <Title>Datails</Title>
+      <Title>{props.name}</Title>
       <TouchableOpacity onPress={() => handleIsFilled()}>
         <Icon 
           name={isFilledIcons} 
@@ -29,4 +29,4 @@ const HeaderDatails = () => {
   )
 }
 
-export default HeaderDatails;
+export default Header;

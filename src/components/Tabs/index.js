@@ -6,7 +6,12 @@ import { Container, GoToIcon, GoToText } from './styles';
 const Tabs = () => {
   const link = useRouter();
 
-  const handleGoHome = () => link.push('/');
+  const handleGoHome = () => {
+    link.push('/');
+  }
+    
+  const handleGoToWatchList = () => link.push('/watchList');
+
   return (
     <Container> 
       <GoToIcon onPress={() => handleGoHome()}>
@@ -17,7 +22,7 @@ const Tabs = () => {
         <Icon name="search-outline" size={28} color="#67686D" />
         <GoToText>Search</GoToText>
       </GoToIcon>
-      <GoToIcon>
+      <GoToIcon onPress={() => handleGoToWatchList()}>
         <Icon name="bookmark-outline" size={28} color="#67686D" />
         <GoToText>Watch list</GoToText>
       </GoToIcon>

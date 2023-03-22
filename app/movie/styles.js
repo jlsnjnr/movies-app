@@ -14,9 +14,9 @@ export const PContainerH = styled.View` padding: 0 20px;`;
 
 export const ContainerNote = styled.View`
   flex-direction: row;
-  gap: 10;
-  bottom: 10;
-  right: 15;
+  gap: 10px;
+  bottom: 10px;
+  right: 15px;
   position: absolute;
   background: rgba(37, 40, 54, 0.70);
   backdrop-filter: blur(30px);

@@ -1,14 +1,13 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderDatails from "./../../src/components/HeaderDatails";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { View } from "react-native";
 import { Image } from "react-native";
 import { Dimensions } from "react-native";
 import { AboutMovie, Container, ContainerDatails, ContainerIcons, ContainerNote, LogoContainer, Note, PContainer, PContainerH, TextBottom, TitleDetails } from "./styles";
-import { Text } from "react-native";
 
 import Icon from "react-native-vector-icons/Ionicons";
+import Header from "../../src/components/Header";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -29,7 +28,7 @@ export default function Page() {
       <Container>
         <SafeAreaView style={{ marginBottom: 65 }}>
           <PContainer>
-            <HeaderDatails />
+            <Header name="Detail" />
           </PContainer>
 
           <View style={styles.wrapper}> 
