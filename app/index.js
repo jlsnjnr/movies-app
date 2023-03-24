@@ -25,13 +25,28 @@ import {
   TitleMovieSearch,
 } from "./styles";
 
+import api from "../src/services/api";
+
 export default function Page() {
   const [moviesData, setMovieData] = useState([]);
 
   useEffect(() => {
-    fetch('data.json')
-      .then(console.log)
-  }, []);
+    async function loadFilmes() {
+      const response = await api.get("/genre/movie/list", {
+        params: {
+          api_key: "28fc232cc001c31e8a031f419d0a14ca",
+          language: "pt-BR",
+          // page: 1,
+        }
+      })
+
+      setMovieData(response.data)
+    }
+
+    loadFilmes();
+  }, [])
+
+  console.log(JSON.stringify(moviesData, null, 2))
 
   const [filterMovies, setFilterMovies] = useState([]);
   const [isFocused, setIsFocused] = useState(true);
