@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Image, ScrollView } from "react-native";
+import { Image, ScrollView, TouchableOpacity } from "react-native";
 
 import Icon from "react-native-vector-icons/Ionicons";
 import CarrosselComponent from "../src/components/CarrosselComponent";
@@ -15,6 +15,7 @@ import {
   ContainerScroll,
   ContainerSearchInput,
   DetailsMovieSearch,
+  GoTo,
   IconInput,
   MovieDetailSarch,
   NoteMovieSearch,
@@ -26,49 +27,23 @@ import {
 } from "./styles";
 
 import api from "../src/services/api";
+import { useRouter } from "expo-router";
 
 export default function Page() {
   const [moviesData, setMovieData] = useState([]);
-
-  useEffect(() => {
-    async function loadFilmes() {
-      const response = await api.get("/genre/movie/list", {
-        params: {
-          api_key: "28fc232cc001c31e8a031f419d0a14ca",
-          language: "pt-BR",
-          // page: 1,
-        }
-      })
-
-      setMovieData(response.data)
-    }
-
-    loadFilmes();
-  }, [])
-
-  console.log(JSON.stringify(moviesData, null, 2))
+  const [moviesCategory, setMovieCategory] = useState([]);
 
   const [filterMovies, setFilterMovies] = useState([]);
   const [isFocused, setIsFocused] = useState(true);
-  
-  const [filteredData, setFilteredData] = useState([]);
-  const [filteredDataSearch, setFilteredDataSearch] = useState(false);
 
   const [search, setSearch] = useState("");
   const [noHaveResults, setNoHaveResults] = useState(false);
-
-  const filterNow = (text) => {
-    const isHighligthed = moviesData.filter(
-      (isHighligthed) => isHighligthed.status === text
-    );
-    setFilterMovies(isHighligthed);
-  };
 
   const handleSearch = () => {
     const filteredDataMovie = moviesData.filter((item) =>
       item.name.toLowerCase().includes(search.toLowerCase())
     );
-    
+
     if (filteredDataMovie.length === 0) {
       setNoHaveResults(true);
     } else {
@@ -77,19 +52,69 @@ export default function Page() {
 
     setFilteredData(filteredDataMovie);
     setFilteredDataSearch(true);
-    
-    if(search === "") {
+
+    if (search === "") {
       setIsFocused(true);
     } else {
       setIsFocused(false);
     }
 
-    setSearch("")
+    setSearch("");
   };
 
   useEffect(() => {
-    filterNow("Now playing");
+    async function loadFilmes() {
+      const response = await api.get("/movie/now_playing", {
+        params: {
+          api_key: "28fc232cc001c31e8a031f419d0a14ca",
+          language: "pt-BR",
+        },
+      });
+      setMovieCategory(response.data.results);
+    }
+
+    loadFilmes();
   }, []);
+
+  const changeToPopular = async () => {
+    const response = await api.get("/movie/popular", {
+      params: {
+        api_key: "28fc232cc001c31e8a031f419d0a14ca",
+        language: "pt-BR",
+      },
+    });
+    setMovieCategory(response.data.results);
+  };
+
+  const changeToNowPlaying = async () => {
+    const response = await api.get("/movie/now_playing", {
+      params: {
+        api_key: "28fc232cc001c31e8a031f419d0a14ca",
+        language: "pt-BR",
+      },
+    });
+    setMovieCategory(response.data.results);
+  };
+
+  const changeToNowTopRated = async () => {
+    const response = await api.get("/movie/top_rated", {
+      params: {
+        api_key: "28fc232cc001c31e8a031f419d0a14ca",
+        language: "pt-BR",
+      },
+    });
+    setMovieCategory(response.data.results);
+  };
+
+  const changeToUpcoming = async () => {
+    const response = await api.get("/movie/upcoming", {
+      params: {
+        api_key: "28fc232cc001c31e8a031f419d0a14ca",
+        language: "pt-BR",
+      },
+    });
+    setMovieCategory(response.data.results);
+  };
 
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
@@ -98,6 +123,8 @@ export default function Page() {
       return text;
     }
   };
+
+  const link = useRouter();
 
   return (
     <Container>
@@ -130,38 +157,39 @@ export default function Page() {
                 pagingEnabled
               >
                 <ContainerListHorizontalView>
-                  <TitleList onPress={() => filterNow("Now playing")}>
-                    <TitleListText>Now playing</TitleListText>
+                  <TitleList onPress={() => changeToNowPlaying()}>
+                    <TitleListText>Now Playing</TitleListText>
                   </TitleList>
-
-                  <TitleList onPress={() => filterNow("Upcoming")}>
-                    <TitleListText>Upcoming</TitleListText>
-                  </TitleList>
-
-                  <TitleList onPress={() => filterNow("Top rated")}>
-                    <TitleListText>Top rated</TitleListText>
-                  </TitleList>
-
-                  <TitleList onPress={() => filterNow("Popular")}>
+                  <TitleList onPress={() => changeToPopular()}>
                     <TitleListText>Popular</TitleListText>
+                  </TitleList>
+                  <TitleList onPress={() => changeToNowTopRated()}>
+                    <TitleListText>Top Rated</TitleListText>
+                  </TitleList>
+                  <TitleList onPress={() => changeToUpcoming()}>
+                    <TitleListText>Upcoming</TitleListText>
                   </TitleList>
                 </ContainerListHorizontalView>
               </ScrollView>
 
               <ContainerMovies>
-                {filterMovies.map((url) => (
-                  <Image
-                    key={url.url}
-                    resizeMode="cover"
-                    source={{ uri: url.url }}
-                    style={{ height: 150, width: "30%", borderRadius: 10 }}
-                  />
+                {moviesCategory.map((url) => (
+                  <GoTo onPress={() => link.push(`/movie/${url.id}`)}key={url.poster_path}>
+                    <Image
+                      resizeMode="cover"
+                      onPress={() => console.log('hello!')}
+                      source={{
+                        uri: `https://image.tmdb.org/t/p/w500/${url.poster_path}`,
+                      }}
+                      style={{ height: 150, width: "100%", borderRadius: 10 }}
+                    />
+                  </GoTo>
                 ))}
               </ContainerMovies>
             </>
           )}
 
-          {noHaveResults === true && <NoResults />}
+          {/* {noHaveResults === true && <NoResults />}
 
           {filteredDataSearch !== "" && 
             filteredData.map((item) => (
@@ -194,8 +222,7 @@ export default function Page() {
                   </ContainerName>
                 </MovieDetailSarch>
               </ContainerMoviesSearch>
-          ))}
-
+          ))} */}
         </ContainerScroll>
       </SafeAreaView>
     </Container>

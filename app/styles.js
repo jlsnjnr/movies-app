@@ -118,3 +118,9 @@ export const ContainerName = styled.View`
   flex-direction: row;
   gap: 5px;
 `
+
+export const GoTo = styled.TouchableOpacity`
+  height: 150px; 
+  width: 30%; 
+  border-radius: 10px; 
+`

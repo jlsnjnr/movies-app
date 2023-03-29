@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { View } from "react-native";
 import { Image } from "react-native";
@@ -8,21 +8,31 @@ import { AboutMovie, Container, ContainerDatails, ContainerIcons, ContainerNote,
 
 import Icon from "react-native-vector-icons/Ionicons";
 import Header from "../../src/components/Header";
+import api from "../../src/services/api";
+import { useSearchParams, useSegments } from "expo-router";
 
 const windowWidth = Dimensions.get("window").width;
 
-export default function Page() {
-  const [dataMovie, setDataMovie] = useState({
-    banner: 'https://i0.wp.com/www.lacasadeel.net/wp-content/uploads/2022/12/Creed-III-Creed-3.jpg?resize=1068%2C602&ssl=1',
-    bg: 'https://amc-theatres-res.cloudinary.com/image/upload/f_auto,fl_lossy,h_465,q_auto,w_310/v1675978775/amc-cdn/production/2/movies/66200/66187/PosterDynamic/148935.jpg',
-    title: 'Creed III',
-    about: 'Da Metro Goldwyn Mayer Pictures chega "Creed III," primeiro filme realizado por Michael B. Jordan, que regressa ao seu papel de Adonis Creed na terceira parte deste franchise de sucesso.',
-    date: 2023,
-    time: '148 minutos',
-    genero: 'Action',
-    nota: 7.9,
-  });
-  
+export default function Page({ navigation, route }) {
+  const [movie, setMovie] = useState({});
+  const [genero, setGenero] = useState('');
+  const segments = useSearchParams();
+
+  useEffect(() => {
+    async function loadFilmes() {
+      const response = await api.get(`/movie/${segments.id}`, {
+        params: {
+          api_key: "28fc232cc001c31e8a031f419d0a14ca",
+          language: "pt-BR",
+        },
+      });
+      setMovie(response.data);
+      setGenero(response.data.genres[0]['name']);
+    }
+
+    loadFilmes();
+  }, []);
+
   return (
     <>
       <Container>
@@ -35,11 +45,11 @@ export default function Page() {
             <Image 
               resizeMode="cover" 
               style={styles.image} 
-              source={{ uri: dataMovie.banner }} 
+              source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.backdrop_path}` }} 
             />
             <ContainerNote>
               <Icon weight="bold" name="star-outline" size={16} color="#FF8700" />
-              <Note>{dataMovie.nota}</Note>
+              <Note>{movie.vote_average}</Note>
             </ContainerNote>
           </View>
 
@@ -48,9 +58,9 @@ export default function Page() {
               <Image 
                 resizeMode="cover" 
                 style={styles.imageLogo} 
-                source={{ uri: dataMovie.bg }} 
+                source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}` }}  
               />
-              <TextBottom>{dataMovie.title}</TextBottom>
+              <TextBottom>{movie.title}</TextBottom>
             </LogoContainer>
           </PContainerH>
 
@@ -58,23 +68,23 @@ export default function Page() {
             <ContainerDatails>
               <ContainerIcons>
                 <Icon name="calendar-outline" size={18} color="#92929D" />
-                <TitleDetails>{dataMovie.date}</TitleDetails>
+                <TitleDetails>{movie.release_date}</TitleDetails>
               </ContainerIcons>
 
               <ContainerIcons>
                 <Icon name="time-outline" size={18} color="#92929D" />
-                <TitleDetails>{dataMovie.time}</TitleDetails>
+                <TitleDetails>{movie.runtime} minutos</TitleDetails>
               </ContainerIcons>
 
               <ContainerIcons>
                 <Icon name="easel-outline" size={18} color="#92929D" />
-                <TitleDetails>{dataMovie.genero}</TitleDetails>
+                  <TitleDetails>{genero}</TitleDetails>
               </ContainerIcons>
             </ContainerDatails>
           </PContainerH>
 
           <PContainerH>
-            <AboutMovie>{dataMovie.about}</AboutMovie>
+            <AboutMovie>{movie.overview}</AboutMovie>
           </PContainerH>
         </SafeAreaView>
       </Container>
