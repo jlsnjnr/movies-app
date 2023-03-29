@@ -1,3 +1,4 @@
+import { Dimensions } from 'react-native';
 import styled from 'styled-components';
 
 export const Container = styled.View`
@@ -11,23 +12,6 @@ export const PContainer = styled.View`
 `
 
 export const PContainerH = styled.View` padding: 0 20px;`;
-
-export const ContainerNote = styled.View`
-  flex-direction: row;
-  gap: 10px;
-  bottom: 10px;
-  right: 15px;
-  position: absolute;
-  background: rgba(37, 40, 54, 0.70);
-  backdrop-filter: blur(30px);
-  border-radius: 8px;
-  padding: 6px 15px;
-`
-
-export const Note = styled.Text`
-  font-weight: bold;
-  color: #FF8700;
-`
 
 export const LogoContainer = styled.View`
   flex-direction: row;
@@ -46,30 +30,6 @@ export const TextBottom = styled.Text`
   margin-left: 10px;
 `
 
-export const ContainerDatails = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 0 25px;
-  position: relative;
-  bottom: 20px;
-  margin-bottom: 20px;
-`
-
-export const ContainerIcons = styled.View`
-  flex-direction: row;
-  gap: 10px;
-  align-items: center;
-`
-
-export const TitleDetails = styled.Text`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 15px;
-
-  color: #92929D;
-`
-
 export const AboutMovie = styled.Text`
   font-style: normal;
   font-weight: 400;
@@ -77,4 +37,12 @@ export const AboutMovie = styled.Text`
   line-height: 18px;
 
   color: #FFFFFF;
+
+  margin: 0 0 35px 0;
 `
+
+export const ImageLogo = styled.Image`
+  border-radius: 16px;
+  height: 120px;
+  width: 95px;
+`;

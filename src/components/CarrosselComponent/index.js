@@ -20,11 +20,10 @@ const CarrosselComponent = (props) => {
   }, [])
 
   const link = useRouter();
-  const handleOpenMovie = () => link?.push('/movie');
 
   const renderItem = ({ item }) => {
     return (
-      <Slide onPress={() => handleOpenMovie()}>
+      <Slide onPress={() => link.push(`/movie/${item.id}`)}>
           <Image source={{ uri: `https://image.tmdb.org/t/p/w500/${item.poster_path}` }} />
       </Slide>
     );

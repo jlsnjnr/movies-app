@@ -28,10 +28,13 @@ import {
 
 import api from "../src/services/api";
 import { useRouter } from "expo-router";
+import ListCategory from "../src/components/ListCategory";
+import { View } from "react-native";
 
 export default function Page() {
   const [moviesData, setMovieData] = useState([]);
   const [moviesCategory, setMovieCategory] = useState([]);
+  const [teste, setTeste] = useState([]);
 
   const [filterMovies, setFilterMovies] = useState([]);
   const [isFocused, setIsFocused] = useState(true);
@@ -39,28 +42,28 @@ export default function Page() {
   const [search, setSearch] = useState("");
   const [noHaveResults, setNoHaveResults] = useState(false);
 
-  const handleSearch = () => {
-    const filteredDataMovie = moviesData.filter((item) =>
-      item.name.toLowerCase().includes(search.toLowerCase())
-    );
+  // const handleSearch = () => {
+  //   const filteredDataMovie = moviesData.filter((item) =>
+  //     item.name.toLowerCase().includes(search.toLowerCase())
+  //   );
 
-    if (filteredDataMovie.length === 0) {
-      setNoHaveResults(true);
-    } else {
-      setNoHaveResults(false);
-    }
+  //   if (filteredDataMovie.length === 0) {
+  //     setNoHaveResults(true);
+  //   } else {
+  //     setNoHaveResults(false);
+  //   }
 
-    setFilteredData(filteredDataMovie);
-    setFilteredDataSearch(true);
+  //   setFilteredData(filteredDataMovie);
+  //   setFilteredDataSearch(true);
 
-    if (search === "") {
-      setIsFocused(true);
-    } else {
-      setIsFocused(false);
-    }
+  //   if (search === "") {
+  //     setIsFocused(true);
+  //   } else {
+  //     setIsFocused(false);
+  //   }
 
-    setSearch("");
-  };
+  //   setSearch("");
+  // };
 
   useEffect(() => {
     async function loadFilmes() {
@@ -76,45 +79,18 @@ export default function Page() {
     loadFilmes();
   }, []);
 
-  const changeToPopular = async () => {
-    const response = await api.get("/movie/popular", {
+  async function loadFilmes() {
+    const response = await api.get("/search/movie", {
       params: {
         api_key: "28fc232cc001c31e8a031f419d0a14ca",
         language: "pt-BR",
+        query: search,
       },
     });
-    setMovieCategory(response.data.results);
-  };
+    setTeste(response.data.results);
+  }
 
-  const changeToNowPlaying = async () => {
-    const response = await api.get("/movie/now_playing", {
-      params: {
-        api_key: "28fc232cc001c31e8a031f419d0a14ca",
-        language: "pt-BR",
-      },
-    });
-    setMovieCategory(response.data.results);
-  };
-
-  const changeToNowTopRated = async () => {
-    const response = await api.get("/movie/top_rated", {
-      params: {
-        api_key: "28fc232cc001c31e8a031f419d0a14ca",
-        language: "pt-BR",
-      },
-    });
-    setMovieCategory(response.data.results);
-  };
-
-  const changeToUpcoming = async () => {
-    const response = await api.get("/movie/upcoming", {
-      params: {
-        api_key: "28fc232cc001c31e8a031f419d0a14ca",
-        language: "pt-BR",
-      },
-    });
-    setMovieCategory(response.data.results);
-  };
+  console.log(teste.map((post) => post.title));
 
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
@@ -136,7 +112,7 @@ export default function Page() {
             <Search
               onChangeText={(text) => setSearch(text)}
               value={search}
-              onSubmitEditing={() => handleSearch()}
+              onSubmitEditing={() => loadFilmes()}
               placeholderTextColor="#67686D"
               placeholder="Search"
             />
@@ -148,36 +124,13 @@ export default function Page() {
           {isFocused === true && (
             <>
               <CarrosselComponent />
-
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                scrollEventThrottle={200}
-                decelerationRate="fast"
-                pagingEnabled
-              >
-                <ContainerListHorizontalView>
-                  <TitleList onPress={() => changeToNowPlaying()}>
-                    <TitleListText>Now Playing</TitleListText>
-                  </TitleList>
-                  <TitleList onPress={() => changeToPopular()}>
-                    <TitleListText>Popular</TitleListText>
-                  </TitleList>
-                  <TitleList onPress={() => changeToNowTopRated()}>
-                    <TitleListText>Top Rated</TitleListText>
-                  </TitleList>
-                  <TitleList onPress={() => changeToUpcoming()}>
-                    <TitleListText>Upcoming</TitleListText>
-                  </TitleList>
-                </ContainerListHorizontalView>
-              </ScrollView>
+              <ListCategory setMovieCategory={setMovieCategory} />
 
               <ContainerMovies>
                 {moviesCategory.map((url) => (
-                  <GoTo onPress={() => link.push(`/movie/${url.id}`)}key={url.poster_path}>
+                  <GoTo onPress={() => link.push(`/movie/${url.id}`)} key={url.poster_path}>
                     <Image
                       resizeMode="cover"
-                      onPress={() => console.log('hello!')}
                       source={{
                         uri: `https://image.tmdb.org/t/p/w500/${url.poster_path}`,
                       }}
@@ -189,25 +142,29 @@ export default function Page() {
             </>
           )}
 
-          {/* {noHaveResults === true && <NoResults />}
+         
+          {/* <NoteMovieSearch>{teste.title}</NoteMovieSearch> */}
 
-          {filteredDataSearch !== "" && 
-            filteredData.map((item) => (
+           {/* {noHaveResults === true && <NoResults />} */}
+{/* 
+
+              
+            {teste.map((item) => (
               <ContainerMoviesSearch>
                 <Image
                   key={item.url}
                   resizeMode="cover"
                   source={{ uri: item.url }}
                   style={{ height: 160, width: "32%", borderRadius: 10 }}
-                />
+                /> 
                 <MovieDetailSarch>
                   <TitleMovieSearch>
                     {truncateText(item.name, 24)}
                   </TitleMovieSearch>
                   <ContainerName>
-                    <Icon name="star-outline" size={16} color="#FF8700" />
-                    <NoteMovieSearch>{item.nota}</NoteMovieSearch>
-                  </ContainerName>
+                    <Icon name="star-outline" size={16} color="#FF8700" /> 
+                    <NoteMovieSearch>{item.title}</NoteMovieSearch>
+                   </ContainerName>
                   <ContainerName>
                     <Icon name="apps-outline" size={16} color="#fff" />
                     <DetailsMovieSearch>{item.genero}</DetailsMovieSearch>
@@ -222,7 +179,7 @@ export default function Page() {
                   </ContainerName>
                 </MovieDetailSarch>
               </ContainerMoviesSearch>
-          ))} */}
+          ))}  */}
         </ContainerScroll>
       </SafeAreaView>
     </Container>
