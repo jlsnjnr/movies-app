@@ -88,6 +88,7 @@ export default function Page() {
       },
     });
     setTeste(response.data.results);
+    setSearch("");
   }
 
   console.log(teste.map((post) => post.title));
@@ -128,7 +129,10 @@ export default function Page() {
 
               <ContainerMovies>
                 {moviesCategory.map((url) => (
-                  <GoTo onPress={() => link.push(`/movie/${url.id}`)} key={url.poster_path}>
+                  <GoTo
+                    onPress={() => link.push(`/movie/${url.id}`)}
+                    key={url.poster_path}
+                  >
                     <Image
                       resizeMode="cover"
                       source={{
@@ -142,44 +146,33 @@ export default function Page() {
             </>
           )}
 
-         
-          {/* <NoteMovieSearch>{teste.title}</NoteMovieSearch> */}
+          {teste === '' || undefined || [] || {} && <NoResults />}
 
-           {/* {noHaveResults === true && <NoResults />} */}
-{/* 
+          {teste.map((item) => (
+            <ContainerMoviesSearch onPress={() => link.push(`/movie/${item.id}`)}>
+              <Image
+                resizeMode="cover"
+                source={{
+                  uri: `https://image.tmdb.org/t/p/w500/${item.poster_path}`,
+                }}
+                style={{ height: 160, width: "32%", borderRadius: 10 }}
+              />
+              <MovieDetailSarch>
+                <TitleMovieSearch>
+                  {truncateText(item.title, 24)}
+                </TitleMovieSearch>
+                <ContainerName>
+                  <Icon name="star-outline" size={16} color="#FF8700" />
+                  <NoteMovieSearch>{item.vote_average}</NoteMovieSearch>
+                </ContainerName>
+                <ContainerName>
+                  <Icon name="calendar-outline" size={16} color="#fff" />
+                  <DetailsMovieSearch>{item.release_date}</DetailsMovieSearch>
+                </ContainerName>
+              </MovieDetailSarch>
+            </ContainerMoviesSearch>
+          ))}
 
-              
-            {teste.map((item) => (
-              <ContainerMoviesSearch>
-                <Image
-                  key={item.url}
-                  resizeMode="cover"
-                  source={{ uri: item.url }}
-                  style={{ height: 160, width: "32%", borderRadius: 10 }}
-                /> 
-                <MovieDetailSarch>
-                  <TitleMovieSearch>
-                    {truncateText(item.name, 24)}
-                  </TitleMovieSearch>
-                  <ContainerName>
-                    <Icon name="star-outline" size={16} color="#FF8700" /> 
-                    <NoteMovieSearch>{item.title}</NoteMovieSearch>
-                   </ContainerName>
-                  <ContainerName>
-                    <Icon name="apps-outline" size={16} color="#fff" />
-                    <DetailsMovieSearch>{item.genero}</DetailsMovieSearch>
-                  </ContainerName>
-                  <ContainerName>
-                    <Icon name="calendar-outline" size={16} color="#fff" />
-                    <DetailsMovieSearch>{item.year}</DetailsMovieSearch>
-                  </ContainerName>
-                  <ContainerName>
-                    <Icon name="time-outline" size={16} color="#fff" />
-                    <DetailsMovieSearch>{item.time}</DetailsMovieSearch>
-                  </ContainerName>
-                </MovieDetailSarch>
-              </ContainerMoviesSearch>
-          ))}  */}
         </ContainerScroll>
       </SafeAreaView>
     </Container>

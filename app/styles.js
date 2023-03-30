@@ -53,10 +53,11 @@ export const ContainerMovies = styled.View`
   margin-bottom: 30px;
 `
 
-export const ContainerMoviesSearch = styled.View`
+export const ContainerMoviesSearch = styled.TouchableOpacity`
   align-items: center;
   flex-direction: row;
   gap: 20px;
+  margin: 10px 0;
 `
 
 export const MovieDetailSarch = styled.View`
