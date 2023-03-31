@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Image, ScrollView, TouchableOpacity } from "react-native";
+import { Image } from "react-native";
 
 import Icon from "react-native-vector-icons/Ionicons";
 import CarrosselComponent from "../src/components/CarrosselComponent";
@@ -8,7 +8,6 @@ import NoResults from "../src/components/NoResults";
 
 import {
   Container,
-  ContainerListHorizontalView,
   ContainerMovies,
   ContainerMoviesSearch,
   ContainerName,
@@ -21,49 +20,19 @@ import {
   NoteMovieSearch,
   Search,
   Title,
-  TitleList,
-  TitleListText,
   TitleMovieSearch,
 } from "./styles";
 
 import api from "../src/services/api";
 import { useRouter } from "expo-router";
 import ListCategory from "../src/components/ListCategory";
-import { View } from "react-native";
 
 export default function Page() {
-  const [moviesData, setMovieData] = useState([]);
   const [moviesCategory, setMovieCategory] = useState([]);
   const [teste, setTeste] = useState([]);
-
-  const [filterMovies, setFilterMovies] = useState([]);
   const [isFocused, setIsFocused] = useState(true);
-
   const [search, setSearch] = useState("");
   const [noHaveResults, setNoHaveResults] = useState(false);
-
-  // const handleSearch = () => {
-  //   const filteredDataMovie = moviesData.filter((item) =>
-  //     item.name.toLowerCase().includes(search.toLowerCase())
-  //   );
-
-  //   if (filteredDataMovie.length === 0) {
-  //     setNoHaveResults(true);
-  //   } else {
-  //     setNoHaveResults(false);
-  //   }
-
-  //   setFilteredData(filteredDataMovie);
-  //   setFilteredDataSearch(true);
-
-  //   if (search === "") {
-  //     setIsFocused(true);
-  //   } else {
-  //     setIsFocused(false);
-  //   }
-
-  //   setSearch("");
-  // };
 
   useEffect(() => {
     async function loadFilmes() {
@@ -87,11 +56,17 @@ export default function Page() {
         query: search,
       },
     });
+
     setTeste(response.data.results);
-    setSearch("");
+
+    if (response.data.results.length === 0) { // verifica se o resultado da API é vazio
+      setNoHaveResults(true);
+    } else {
+      setNoHaveResults(false);
+    }
   }
 
-  console.log(teste.map((post) => post.title));
+  // console.log(teste.map((post) => post.title));
 
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
@@ -146,33 +121,34 @@ export default function Page() {
             </>
           )}
 
-          {teste === '' || undefined || [] || {} && <NoResults />}
-
-          {teste.map((item) => (
-            <ContainerMoviesSearch onPress={() => link.push(`/movie/${item.id}`)}>
-              <Image
-                resizeMode="cover"
-                source={{
-                  uri: `https://image.tmdb.org/t/p/w500/${item.poster_path}`,
-                }}
-                style={{ height: 160, width: "32%", borderRadius: 10 }}
-              />
-              <MovieDetailSarch>
-                <TitleMovieSearch>
-                  {truncateText(item.title, 24)}
-                </TitleMovieSearch>
-                <ContainerName>
-                  <Icon name="star-outline" size={16} color="#FF8700" />
-                  <NoteMovieSearch>{item.vote_average}</NoteMovieSearch>
-                </ContainerName>
-                <ContainerName>
-                  <Icon name="calendar-outline" size={16} color="#fff" />
-                  <DetailsMovieSearch>{item.release_date}</DetailsMovieSearch>
-                </ContainerName>
-              </MovieDetailSarch>
-            </ContainerMoviesSearch>
-          ))}
-
+          {noHaveResults ? 
+            <NoResults /> : 
+          (
+            teste.map((item) => (
+              <ContainerMoviesSearch key={item.title} onPress={() => link.push(`/movie/${item.id}`)}>
+                <Image
+                  resizeMode="cover"
+                  source={{
+                    uri: `https://image.tmdb.org/t/p/w500/${item.poster_path}`,
+                  }}
+                  style={{ height: 160, width: "32%", borderRadius: 10 }}
+                />
+                <MovieDetailSarch>
+                  <TitleMovieSearch>
+                    {truncateText(item.title, 24)}
+                  </TitleMovieSearch>
+                  <ContainerName>
+                    <Icon name="star-outline" size={16} color="#FF8700" />
+                    <NoteMovieSearch>{item.vote_average}</NoteMovieSearch>
+                  </ContainerName>
+                  <ContainerName>
+                    <Icon name="calendar-outline" size={16} color="#fff" />
+                    <DetailsMovieSearch>{item.release_date}</DetailsMovieSearch>
+                  </ContainerName>
+                </MovieDetailSarch>
+              </ContainerMoviesSearch>
+            ))
+          )}
         </ContainerScroll>
       </SafeAreaView>
     </Container>

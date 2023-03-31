@@ -10,7 +10,7 @@ export const Container = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: ${windowWidth};
+  width: ${windowWidth}px;
   padding: 15px 20px;
   border-top-color: #0296E5;
   border-top-width: 1px;

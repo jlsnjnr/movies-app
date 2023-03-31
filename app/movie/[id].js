@@ -19,7 +19,7 @@ import DetailsMovie from "../../src/components/DetailsMovie";
 import { useSearchParams } from "expo-router";
 import { ContainerScroll } from "../styles";
 
-export default function Page({ navigation, route }) {
+export default function Page() {
   const [movie, setMovie] = useState({});
   const [genero, setGenero] = useState("");
   const [date, setDate] = useState("");
@@ -47,7 +47,7 @@ export default function Page({ navigation, route }) {
         <SafeAreaView style={{ marginBottom: 65 }}>
           <ContainerScroll scrollToOverflowEnabled={false}>
             <PContainer>
-              <Header name="Detail" />
+              <Header movie={movie} name="Detail" />
             </PContainer>
 
             <MovieNameAndDetails movie={movie} />

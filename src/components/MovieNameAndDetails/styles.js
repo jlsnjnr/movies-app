@@ -10,10 +10,10 @@ export const Wrapper = styled.View`
 `
 
 export const Image = styled.Image`
-   flex: 1;
-   width: ${windowWidth};
-   border-bottom-left: 16px;
-   border-bottom-right: 16px;
+  flex: 1;
+  width: ${windowWidth}px;
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 16px;
 `;
 
 export const ContainerNote = styled.View`
