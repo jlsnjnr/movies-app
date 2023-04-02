@@ -64,9 +64,9 @@ export default function Page() {
     } else {
       setNoHaveResults(false);
     }
-  }
 
-  // console.log(teste.map((post) => post.title));
+    setSearch("");
+  }
 
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
@@ -77,6 +77,8 @@ export default function Page() {
   };
 
   const link = useRouter();
+
+  const icon = require('./../src/assets/no-results1.png');
 
   return (
     <Container>
@@ -122,7 +124,11 @@ export default function Page() {
           )}
 
           {noHaveResults ? 
-            <NoResults /> : 
+            <NoResults 
+              description='Find your movie by Type title, categories, years, etc ' 
+              title='We are sorry, We can not find the movie :(' 
+              img={icon} 
+            /> : 
           (
             teste.map((item) => (
               <ContainerMoviesSearch key={item.title} onPress={() => link.push(`/movie/${item.id}`)}>

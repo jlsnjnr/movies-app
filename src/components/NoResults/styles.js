@@ -21,4 +21,6 @@ export const SubTextSorry = styled.Text`
   font-size: 12px;
   text-align: center;
   color: #92929D;
+
+  margin-top: 10px;
 `

@@ -3,39 +3,8 @@ import api from "../../services/api";
 import { ContainerListHorizontalView, TitleList, TitleListText } from "./styles";
 
 const ListCategory = ({ setMovieCategory }) => {
-
-  const changeToPopular = async () => {
-    const response = await api.get("/movie/popular", {
-      params: {
-        api_key: "28fc232cc001c31e8a031f419d0a14ca",
-        language: "pt-BR",
-      },
-    });
-    setMovieCategory(response.data.results);
-  };
-
-  const changeToNowPlaying = async () => {
-    const response = await api.get("/movie/now_playing", {
-      params: {
-        api_key: "28fc232cc001c31e8a031f419d0a14ca",
-        language: "pt-BR",
-      },
-    });
-    setMovieCategory(response.data.results);
-  };
-
-  const changeToNowTopRated = async () => {
-    const response = await api.get("/movie/top_rated", {
-      params: {
-        api_key: "28fc232cc001c31e8a031f419d0a14ca",
-        language: "pt-BR",
-      },
-    });
-    setMovieCategory(response.data.results);
-  };
-
-  const changeToUpcoming = async () => {
-    const response = await api.get("/movie/upcoming", {
+  const changeTo = async (text) => {
+    const response = await api.get(`/movie/${text}`, {
       params: {
         api_key: "28fc232cc001c31e8a031f419d0a14ca",
         language: "pt-BR",
@@ -53,16 +22,16 @@ const ListCategory = ({ setMovieCategory }) => {
       pagingEnabled
     >
       <ContainerListHorizontalView>
-        <TitleList onPress={() => changeToNowPlaying()}>
-          <TitleListText>Now Playing</TitleListText>
+        <TitleList onPress={() => changeTo('popular')}>
+          <TitleListText style={{ border: '1px solid #ccc'}}>Now Playing</TitleListText>
         </TitleList>
-        <TitleList onPress={() => changeToPopular()}>
+        <TitleList onPress={() => changeTo('now_playing')}>
           <TitleListText>Popular</TitleListText>
         </TitleList>
-        <TitleList onPress={() => changeToNowTopRated()}>
+        <TitleList onPress={() => changeTo('top_rated')}>
           <TitleListText>Top Rated</TitleListText>
         </TitleList>
-        <TitleList onPress={() => changeToUpcoming()}>
+        <TitleList onPress={() => changeTo('upcoming')}>
           <TitleListText>Upcoming</TitleListText>
         </TitleList>
       </ContainerListHorizontalView>
