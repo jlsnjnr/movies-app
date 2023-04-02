@@ -1,8 +1,7 @@
-import { Image } from "react-native";
+import { Image, View } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useState, useEffect } from "react";
 import {
-  ContainerMoviesSearch,
   ContainerName,
   ContainerScroll,
   DetailsMovieSearch,
@@ -12,7 +11,7 @@ import {
 } from "../styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Container, PContainer } from "../movie/styles";
-import { ContainerHeaderDetails, MarginH, Title } from "./styles";
+import { ContainerDetails, ContainerHeaderDetails, ContainerMoviesSearch, MarginH, Title } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
@@ -35,7 +34,14 @@ export default function Page() {
     }
   };
 
-  
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "...";
+    } else {
+      return text;
+    }
+  };
+
   useEffect(() => {
     const getSavedMovies = async () => {
       try {
@@ -69,33 +75,36 @@ export default function Page() {
             </PContainer>
             <MarginH>
               {savedMovies.length === 0 && 
-               <NoResults 
-                 description='Find your movie by Type title, categories, years, etc ' 
-                 title='There is no movie yet!' 
-                 img={icon} 
-               />}
+                <NoResults 
+                  description='Find your movie by Type title, categories, years, etc ' 
+                  title='There is no movie yet!' 
+                  img={icon} 
+                />
+               }
 
               {savedMovies.map((movie) => (
-                <ContainerMoviesSearch>
-                  <Image
-                    resizeMode="cover"
-                    source={{
-                      uri: `https://image.tmdb.org/t/p/w500/${movie.img}`,
-                    }}
-                    style={{ height: 160, width: "32%", borderRadius: 10 }}
-                  />
-                  <MovieDetailSarch>
-                    <TitleMovieSearch>{movie.name}</TitleMovieSearch>
-                    <ContainerName>
-                      <Icon name="star-outline" size={16} color="#FF8700" />
-                      <NoteMovieSearch>{movie.nota}</NoteMovieSearch>
-                    </ContainerName>
-                    <ContainerName>
-                      <Icon name="calendar-outline" size={16} color="#fff" />
-                      <DetailsMovieSearch>{movie.date}</DetailsMovieSearch>
-                    </ContainerName>
-                  </MovieDetailSarch>
-                  <TouchableOpacity onPress={() => removeMovie(movie.name)}>
+                <ContainerMoviesSearch key={movie.name}>
+                  <ContainerDetails>
+                    <Image
+                      resizeMode="cover"
+                      source={{
+                        uri: `https://image.tmdb.org/t/p/w500/${movie.img}`,
+                      }}
+                      style={{ height: 160, width: "32%", borderRadius: 10 }}
+                    />
+                    <MovieDetailSarch>
+                      <TitleMovieSearch>{truncateText(movie.name, 20)}</TitleMovieSearch>
+                      <ContainerName>
+                        <Icon name="star-outline" size={16} color="#FF8700" />
+                        <NoteMovieSearch>{movie.nota}</NoteMovieSearch>
+                      </ContainerName>
+                      <ContainerName>
+                        <Icon name="calendar-outline" size={16} color="#fff" />
+                        <DetailsMovieSearch>{movie.date}</DetailsMovieSearch>
+                      </ContainerName>
+                    </MovieDetailSarch>
+                  </ContainerDetails>
+                  <TouchableOpacity style={{ marginLeft: 'auto' }} onPress={() => removeMovie(movie.name)}>
                     <Icon name="trash-outline" size={20} color="#FF8700" />
                   </TouchableOpacity>
                 </ContainerMoviesSearch>

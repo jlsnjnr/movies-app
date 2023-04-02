@@ -22,13 +22,6 @@ export const ContainerSearchInput = styled.View`
   position: relative;
 `
 
-export const IconInput = styled.View`
-  position: absolute;
-  right: 0;
-  padding-right: 15px;
-  margin: 30px 0;
-`
-
 export const Search = styled.TextInput`
   margin: 24px 0;
 
@@ -44,13 +37,11 @@ export const Search = styled.TextInput`
   font-size: 16px;
 `
 
-export const ContainerMovies = styled.View`
-  align-items: center;
-
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 30px;
+export const IconInput = styled.View`
+  position: absolute;
+  right: 0;
+  padding-right: 15px;
+  margin: 30px 0;
 `
 
 export const ContainerMoviesSearch = styled.TouchableOpacity`
@@ -66,20 +57,16 @@ export const MovieDetailSarch = styled.View`
 
 export const TitleMovieSearch = styled.Text`
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400;\
   font-size: 16px;
   line-height: 24px;
   color: #FFFFFF;
 `
 
-export const DetailsMovieSearch = styled.Text`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 24px;
-  color: #FFFFFF;
+export const ContainerName = styled.View`
   align-items: center;
-  gap: 10px;
+  flex-direction: row;
+  gap: 5px;
 `
 
 export const NoteMovieSearch = styled.Text`
@@ -92,13 +79,12 @@ export const NoteMovieSearch = styled.Text`
   gap: 10px;
 `
 
-export const ContainerName = styled.View`
+export const DetailsMovieSearch = styled.Text`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 24px;
+  color: #FFFFFF;
   align-items: center;
-  flex-direction: row;
-  gap: 5px;
-`
-
-export const GoTo = styled.TouchableOpacity`
-  height: 150px; 
-  width: 30%; 
+  gap: 10px;
 `

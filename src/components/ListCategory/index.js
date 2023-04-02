@@ -23,7 +23,7 @@ const ListCategory = ({ setMovieCategory }) => {
     >
       <ContainerListHorizontalView>
         <TitleList onPress={() => changeTo('popular')}>
-          <TitleListText style={{ border: '1px solid #ccc'}}>Now Playing</TitleListText>
+          <TitleListText>Now Playing</TitleListText>
         </TitleList>
         <TitleList onPress={() => changeTo('now_playing')}>
           <TitleListText>Popular</TitleListText>
