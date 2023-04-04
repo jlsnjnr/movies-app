@@ -18,28 +18,43 @@ import DetailsMovie from "../../src/components/DetailsMovie";
 
 import { useSearchParams } from "expo-router";
 import { ContainerScroll } from "../styles";
+import { Text, View } from "react-native";
+import Loading from "../../src/components/Loading";
+import { formateDate } from "../../src/utils/formatData";
 
 export default function Page() {
   const [movie, setMovie] = useState({});
   const [genero, setGenero] = useState("");
   const [date, setDate] = useState("");
   const segments = useSearchParams();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function loadFilmes() {
-      const response = await api.get(`/movie/${segments.id}`, {
-        params: {
-          api_key: "28fc232cc001c31e8a031f419d0a14ca",
-          language: "pt-BR",
-        },
-      });
-      setMovie(response.data);
-      setGenero(response.data.genres[0]["name"]);
-      setDate(moment(response.data.release_date).format("DD/MM/YYYY"));
+      try {
+        setLoading(true);
+        const response = await api.get(`/movie/${segments.id}`, {
+          params: {
+            api_key: "28fc232cc001c31e8a031f419d0a14ca",
+            language: "pt-BR",
+          },
+        });
+        setMovie(response.data);
+        setGenero(response.data.genres[0]["name"]);
+        setDate(formateDate(response.data.release_date));
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     }
-
+  
     loadFilmes();
   }, []);
+
+  if (loading) {
+    return <Loading />
+  }
 
   return (
     <>
