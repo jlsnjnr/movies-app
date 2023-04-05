@@ -1,9 +1,6 @@
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
-import moment from "moment";
 import {
   AboutMovie,
-  Container,
   ImageLogo,
   LogoContainer,
   PContainer,
@@ -17,10 +14,9 @@ import MovieNameAndDetails from "../../src/components/MovieNameAndDetails";
 import DetailsMovie from "../../src/components/DetailsMovie";
 
 import { useSearchParams } from "expo-router";
-import { ContainerScroll } from "../styles";
-import { Text, View } from "react-native";
-import Loading from "../../src/components/Loading";
 import { formateDate } from "../../src/utils/formatData";
+import Loading from "../../src/components/Loading";
+import { api_key, language } from "../../src/services/keys";
 
 export default function Page() {
   const [movie, setMovie] = useState({});
@@ -34,10 +30,7 @@ export default function Page() {
       try {
         setLoading(true);
         const response = await api.get(`/movie/${segments.id}`, {
-          params: {
-            api_key: "28fc232cc001c31e8a031f419d0a14ca",
-            language: "pt-BR",
-          },
+          params: { api_key, language },
         });
         setMovie(response.data);
         setGenero(response.data.genres[0]["name"]);
@@ -48,43 +41,39 @@ export default function Page() {
         setLoading(false);
       }
     }
-  
+
     loadFilmes();
   }, []);
 
   if (loading) {
-    return <Loading />
+    return <Loading.Loading />;
   }
 
   return (
     <>
-      <Container>
-        <SafeAreaView style={{ marginBottom: 65 }}>
-          <ContainerScroll scrollToOverflowEnabled={false}>
-            <PContainer>
-              <Header movie={movie} name="Detail" />
-            </PContainer>
+      <PContainer>
+        <Header movie={movie} name="Detail" />
+      </PContainer>
 
-            <MovieNameAndDetails movie={movie} />
+      <MovieNameAndDetails movie={movie} />
 
-            <PContainerH>
-              <LogoContainer>
-                <ImageLogo
-                  resizeMode="cover"
-                  source={{
-                    uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}`,
-                  }}
-                />
-                <TextBottom>{movie.title}</TextBottom>
-              </LogoContainer>
-            </PContainerH>
+      <PContainerH>
+        <LogoContainer>
+          <ImageLogo
+            resizeMode="cover"
+            source={{
+              uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}`,
+            }}
+          />
+          <TextBottom>{movie.title}</TextBottom>
+        </LogoContainer>
+      </PContainerH>
 
-            <DetailsMovie date={date} genero={genero} movie={movie} />
+      <DetailsMovie date={date} genero={genero} movie={movie} />
 
-            <PContainerH><AboutMovie>{movie.overview}</AboutMovie></PContainerH>
-          </ContainerScroll>
-        </SafeAreaView>
-      </Container>
+      <PContainerH>
+        <AboutMovie>{movie.overview}</AboutMovie>
+      </PContainerH>
     </>
   );
 }
